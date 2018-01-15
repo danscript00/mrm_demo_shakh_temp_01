@@ -1,0 +1,8 @@
+RewriteEngine on
+RedirectMatch ^/getpreview$ /telegraph/preview.php
+RedirectMatch ^/getarticle$ /telegraph/article.php
+
+#RedirectMatch ^/article/(.*)$ /jsonDB/scripts/articles2/read2.php?a=$1 
+RedirectMatch ^/article/(.*)$ /?article$1
+
+ErrorDocument 404 /

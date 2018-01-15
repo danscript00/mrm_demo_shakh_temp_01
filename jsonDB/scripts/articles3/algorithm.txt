@@ -1,0 +1,12 @@
+в папке 07 создаются файлы для каждой статьи свой
+	тогда если нужна дата создания то она есть
+
+
+
+search: 
+getTheme - find Count of files -> = maxId  (format 00000000)
+	from maxId to maxId-10 return articles if fileexists
+
+
+count - $fi = new FilesystemIterator(__DIR__, FilesystemIterator::SKIP_DOTS);
+	printf("There were %d Files", iterator_count($fi));

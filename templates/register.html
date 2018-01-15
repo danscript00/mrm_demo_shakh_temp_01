@@ -1,0 +1,190 @@
+
+    <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript">
+        function randomString(len, an){
+            an = an&&an.toLowerCase();
+            var str="", i=0, min=an=="a"?10:0, max=an=="n"?10:62;
+            for(;i++<len;){
+              var r = Math.random()*(max-min)+min <<0;
+              str += String.fromCharCode(r+=r>9?r<36?55:61:48);
+            }
+            return str.toUpperCase();
+        }
+    
+        function sendCode(code) {
+          //////////////////////////////////////
+          // SEND MAIL WITH CONFIRMATION CODE
+          //////////////////////////////////////
+        }
+    
+      function registerUser() { 
+        if(validName && validUserName && validMail && !userNameValidating) {
+          document.getElementById("preloader").style = 'display:block';
+
+          var name = document.getElementById("name").value;
+          var username = document.getElementById("username").value;
+          var email = document.getElementById("email").value;
+
+          document.getElementById("Gname").value = name;
+          document.getElementById("Gusername").value = username;
+          document.getElementById("Gmail").value = email;
+
+          var code = randomString(6);
+          userdata = {};
+          userdata["name"] = name;
+          userdata["mail"] = email;
+          userdata["code"] = code;
+          userdata["isActive"] = 0;
+
+          function onSuccess() {
+            sendCode(code);
+
+            document.getElementById("preloader").style = 'display:none';
+
+            loadPage("confirm");
+          }
+
+          usersRequest(userdata, 'create', username, onSuccess);
+        }
+        else {
+          alert('Please complete all fields');
+        }
+      } 
+
+      var validName = false;
+      var validUserName = false;
+      var userNameValidating = false;
+      var validMail = false;
+
+      function checkName(name) {
+        if (name.length > 0) { 
+          document.getElementById("name").className =
+            document.getElementById("name").className
+            .replace(new RegExp('(?:^|\\s)'+ 'is-invalid' + '(?:\\s|$)'), ' ');
+
+          document.getElementById('name').className += ' is-valid';   
+          validName = true;
+          return (true);         
+        }  
+
+        document.getElementById("name").className =
+            document.getElementById("name").className
+            .replace(new RegExp('(?:^|\\s)'+ 'is-valid' + '(?:\\s|$)'), ' ');
+
+        document.getElementById('name').className += ' is-invalid';
+        validName = false;
+        return (false);
+      }
+
+      function checkUserName(username) {
+        function onSuccess(searchFlag) {
+          if(searchFlag == "True") {
+            document.getElementById("username").className =
+                document.getElementById("username").className
+                .replace(new RegExp('(?:^|\\s)'+ 'is-invalid' + '(?:\\s|$)'), ' ');
+
+            document.getElementById('username').className += ' is-valid';
+            validUserName = true;  
+            userNameValidating = false;
+          }
+          else {
+            document.getElementById("username").className =
+                document.getElementById("username").className
+                .replace(new RegExp('(?:^|\\s)'+ 'is-valid' + '(?:\\s|$)'), ' ');
+
+            document.getElementById('username').className += ' is-invalid';
+            validUserName = false;
+            userNameValidating = false;  
+          }
+        }
+
+        userNameValidating = true;
+        usersRequest(username, 'confirmUsername', 'data', onSuccess);  
+      }
+
+      function checkEmail(mail) {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) { 
+          document.getElementById("email").className =
+            document.getElementById("email").className
+            .replace(new RegExp('(?:^|\\s)'+ 'is-invalid' + '(?:\\s|$)'), ' ');
+
+          document.getElementById('email').className += ' is-valid';
+          validMail = true;   
+          return (true);         
+        }  
+
+        document.getElementById("email").className =
+            document.getElementById("email").className
+            .replace(new RegExp('(?:^|\\s)'+ 'is-valid' + '(?:\\s|$)'), ' ');
+
+        document.getElementById('email').className += ' is-invalid';
+        validMail = false;
+        return (false);  
+      }
+
+    </script>
+
+    <!-- Page Content -->
+    <div class="container">    
+
+      <!-- Page Heading/Breadcrumbs -->
+      <h1 class="mt-4 mb-3">Registration in
+        <small>MyRealMotivation</small>
+      </h1>
+
+      <div class="row main">
+        <div class="main-login main-center">
+          <form class="form-horizontal" method="post" action="#">
+
+          <div class="form-group">
+              <label for="name" class="cols-sm-2 control-label">Name</label>
+              <div class="cols-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" name="name" id="name" placeholder="Enter your Name" onchange="checkName(this.value)"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="username" class="cols-sm-2 control-label">Username</label>
+              <div class="cols-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" name="username" id="username" placeholder="Enter your Username" onchange="checkUserName(this.value)"/>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="email" class="cols-sm-2 control-label">Your Email</label>
+              <div class="cols-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" name="email" id="email" placeholder="Enter your Email" onchange="checkEmail(this.value)"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group ">
+              <button type="button" class="btn btn-primary btn-lg btn-block login-button" onclick="registerUser();">Register</button>
+            </div>
+            <div class="login-register">
+                <a href="/login" onclick="reloadPage('login'); return false;">Login</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.js"></script>
+
+    <div id="preloader" style='display:none'>
+      <div id="loader"></div>
+    </div>
+
+    </div>
+    <!-- /.container -->
+

@@ -1,0 +1,73 @@
+
+    <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript">
+      function registerUser() { 
+        var username = document.getElementById("Gusername").value;
+        var code = document.getElementById("code").value;
+        
+        function onSuccess(result) {
+          if(result == "True") {
+            document.getElementById("GuserId").value = username;
+            loadPage("complete");
+          }
+          else {
+            document.getElementById("code").className =
+              document.getElementById("code").className
+              .replace(new RegExp('(?:^|\\s)'+ 'is-valid' + '(?:\\s|$)'), ' ');
+
+            document.getElementById('code').className += ' is-invalid';
+          }
+        }
+
+        usersRequest(code, 'confirmCode', username, onSuccess, null);
+      } 
+
+      function codeChanged() {
+        document.getElementById("code").className =
+          document.getElementById("code").className
+          .replace(new RegExp('(?:^|\\s)'+ 'is-invalid' + '(?:\\s|$)'), ' ');
+      }
+
+    </script>
+
+    <!-- Page Content -->
+    <div class="container">                             
+
+      <!-- Page Heading/Breadcrumbs -->
+      <h1 class="mt-4 mb-3">Registration in
+        <small>MyRealMotivation</small>
+      </h1>
+
+      <div class="row main">
+        <div class="panel-heading">
+                 
+        </div> 
+        <div class="main-login main-center">
+          <form class="form-horizontal" method="post" action="#">
+
+            <div class="form-group">
+              <label for="code" class="cols-sm-2 control-label">Code</label>
+              <div class="cols-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" name="code" id="code" placeholder="Enter your Code" onchange="codeChanged();"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group ">
+              <button type="button" class="btn btn-primary btn-lg btn-block login-button" onclick="registerUser();">Confirm</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.js"></script>
+ 
+
+    </div>
+    <!-- /.container -->
+

@@ -1,0 +1,67 @@
+    <script type="text/javascript">   
+      if(window.location.pathname == "/articles") {
+        function onSuccess(data) {
+          var jsondata = JSON.parse(data);
+          var keys = Object.keys(jsondata);
+
+          if(keys.length == 0) {
+            var element = document.getElementById('preloader');
+            if (element != null) {
+              element.outerHTML = '';
+              delete element;
+            }
+          }  
+
+          keys.forEach(function(key){
+            getPreview(articlesList, 'preloader', jsondata[key], key);
+          });
+        }
+
+        getNewArticles(10, 0, onSuccess);
+      } 
+      else {
+        var themeId = themesDict[window.location.pathname.substr(1)];
+
+        function onSuccess(data) {
+          var strArr = data.split("#");
+
+          for (var i = 0; i < strArr.length; i++) {
+            var buf = strArr[i].split(",");
+            if(buf.length == 2) {
+              console.log(buf[0] + buf[1]);
+              getPreview(articlesList, 'preloader', buf[1], buf[0]);
+            }
+          }
+        }
+
+        getArticlesByInterest(themeId, 10, 0, onSuccess)
+      }
+
+    </script>
+
+    <!-- Page Content -->
+    <div class="container">
+
+      <!-- Page Heading/Breadcrumbs -->
+      <h1 class="mt-4 mb-3">${title}
+        <small> in MyRealMotivation</small>
+      </h1>
+
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/" onclick="reloadPage(''); return false;" style="z-index: 0;">Home</a>
+        </li>
+        <li class="breadcrumb-item active">${title}</li>
+      </ol>
+
+      <!-- Image Header -->
+      <!--<img class="img-fluid rounded mb-4" src="img/new_header.jpg" alt="">-->
+
+      <!-- Articles Section -->
+      <div class="row" id="articlesList"/>
+      <div id="preloader">
+        <div id="loader"></div>
+      </div>
+
+    </div>
+    <!-- /.container -->

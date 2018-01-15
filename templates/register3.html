@@ -1,0 +1,272 @@
+
+    <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+
+  <script type="text/javascript"> 
+       $(window).bind("beforeunload", function(){
+          return false;
+       });
+
+      var goodPasswords = false;
+
+      function updatePassword() {
+
+        //////////////////////////
+        goodPasswords = true;
+        //////////////////////////
+
+        if (goodPasswords) {
+          var username = document.getElementById("Gusername").value;
+          var userId = document.getElementById("GuserId").value;
+          var password = document.getElementById("password").value;
+
+          userdata = {};
+          userdata.code = "";
+          userdata.password = password;
+
+          function onSuccess(data) {
+            document.getElementById("passwordsButton").disabled = true;
+            document.getElementById('secondStep').click();
+          }
+
+          usersRequest(userdata, 'update', username, onSuccess, null)
+        }
+        else {
+          alert('Please control your password');
+        }
+      }
+  
+      function UpdateUser() { 
+        var username = document.getElementById("Gusername").value;
+        var userId = document.getElementById("GuserId").value;
+
+        userdata = {};
+
+        userdata.avatar_id = checkedIndex;
+        userdata.birthday = document.getElementById("birthDate").value;
+        userdata.male = document.getElementById("gender").value;
+        userdata.animal_id = parseInt(document.getElementById("animal").value); 
+
+        function onSuccess() {       
+          document.getElementById("userImg").src = '/img/avatars/avatar' + checkedIndex + '.png';
+          document.getElementById("loginLink").style.display = "none";      
+          document.getElementById("userImg").style.display = "block"; 
+          loadPage("articles");    
+        }
+
+        function onFalse() {
+          alert('ERROR');
+        }
+
+        usersRequest(userdata, 'update', username, onSuccess, onFalse)
+      } 
+
+      var checkedIndex = 0;
+
+      function imgChecked(id) { // img chooser 
+        if (document.getElementById('cb' + id).checked) 
+        {
+            for(i=1; i < 10; i++) {
+              if(i != id) {
+                document.getElementById('cb' + i).checked = false;
+              }
+            }    
+
+            checkedIndex = id;  
+        } 
+        
+      }
+  </script>
+
+    <!-- Page Content -->
+    <div class="container">
+      
+            <!-- Page Heading/Breadcrumbs -->
+            <h1 class="mt-4 mb-3" id="userSetup">Account Setup
+              <small>MyRealMotivation</small>
+            </h1>
+      
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a href="/" onclick="loadPage(''); return false;">Home</a>
+              </li>
+              <li class="breadcrumb-item active">Account Setup</li>
+            </ol>
+      
+            <div class="mb-4" id="accordion" role="tablist" aria-multiselectable="true">
+              <div class="card">
+                <div class="card-header" role="tab" id="headingOne">
+                  <h5 class="mb-0">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">First step - Password</a>
+                  </h5>   
+                </div>
+      
+                <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+                  <div class="card-body">
+                  Imagine a new password for Your account 
+                  </div>
+
+                  <div class="main-login main-center">
+                    <form class="form-horizontal" method="post" action="#">
+        
+                    <div class="form-group">
+                        <label for="password" class="cols-sm-2 control-label">New Password</label>
+                        <div class="cols-sm-10">
+                          <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Enter new password"/>
+                          </div>
+                        </div>
+                      </div>
+          
+                      <div class="form-group">
+                        <label for="password" class="cols-sm-2 control-label">Confirm Password</label>
+                        <div class="cols-sm-10">
+                          <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                            <input type="password" class="form-control" name="confirmPassword" id="confirmPassword"  placeholder="Repeat new password"/>
+                          </div>
+                        </div>
+                      </div> 
+
+                      <div class="form-group ">
+                        <button id="passwordsButton" type="button" class="btn btn-primary btn-lg btn-block login-button" onclick="updatePassword()">Continue</button>
+                      </div>
+                    </form>
+                  </div>
+                  </p>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header" role="tab" id="headingTwo">
+                  <h5 class="mb-0">
+                    <a id="secondStep" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Second step - Profile data
+                    </a>
+                  </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                  <div class="card-body">
+                    Please, choose the icon of your profile.
+                  </div>
+            
+                  <div class="row">
+                    <div class="column">
+                     
+                          <table>
+                              <tr>        
+                                <td>
+                                    <input type="checkbox" id="cb1" onclick="imgChecked(1);"/>
+                                    <label for="cb1"><img src="/img/avatars/avatar1.png" /></label>
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="cb2" onclick="imgChecked(2);"/>
+                                    <label for="cb2"><img src="/img/avatars/avatar2.png" /></label>
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="cb3" onclick="imgChecked(3);"/>
+                                    <label for="cb3"><img src="/img/avatars/avatar3.png" /></label>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                    <input type="checkbox" id="cb4" onclick="imgChecked(4);"/>
+                                    <label for="cb4"><img src="/img/avatars/avatar4.png" /></label>           
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="cb5" onclick="imgChecked(5);"/>
+                                    <label for="cb5"><img src="/img/avatars/avatar5.png" /></label>
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="cb6" onclick="imgChecked(6);"/>
+                                    <label for="cb6"><img src="/img/avatars/avatar6.png" /></label>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                    <input type="checkbox" id="cb7" onclick="imgChecked(7);"/>
+                                    <label for="cb7"><img src="/img/avatars/avatar7.png" /></label>         
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="cb8"onclick="imgChecked(8);" />
+                                    <label for="cb8"><img src="/img/avatars/avatar8.png" /></label>          
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="cb9" onclick="imgChecked(9);"/>
+                                    <label for="cb9"><img src="/img/avatars/avatar9.png" /></label>
+                                </td>
+                              </tr>
+                      </table>
+
+                    </div>
+
+                      <div class="column" style="margin:0 auto;">                      
+                            <div class="input-group date" id="myInput" data-date="12-01-2015" data-date-format="dd-mm-yyyy">
+                                <span class="input-group-addon"><i>Choose</i></span>
+                                <input id="birthDate" type="text" class="form-control" value="12-01-2015" />           
+                            </div>
+
+                            <script type="text/javascript">
+                              $('#myInput').datepicker();
+                            </script>
+                  
+                            </p>
+
+                            <select class="form-control" id="gender" required>
+                                <option hidden >Choose sex</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                              </select>
+
+                            </p>
+          
+                            <select class="form-control" name="Theme" id="animal" required>
+                                  <option hidden >Choose an animal</option>
+                                  <option value="1">Cerulean</option>
+                                  <option value="2">Cosmo</option>
+                                  <option value="3">Cyborg</option>
+                                  <option value="4">Yeti</option>
+                                  <option value="5">Hipster</option>
+                                  <option value="6">Lion</option>
+                                  <option value="7">Goth</option>
+                                  <option value="8">Wolf</option>
+                              </select>
+
+                              </p>
+
+                      
+                          </div>
+                    </div>
+
+
+
+                </div>
+              </div>
+
+              </p>
+              <button type="button" class="btn btn-primary btn-lg btn-block login-button" onclick="UpdateUser();">Save</button>
+            </p>
+
+          </div>
+          <!-- /.container -->
+
+        <script type="text/javascript">   
+            document.getElementById("userSetup").innerHTML  = document.getElementById("Gusername").value + ' Account Setup <small>MyRealMotivation</small>';
+        </script>
+
+    <script>
+        $(function () {
+              $('.btn-radio').click(function(e) {
+                  $('.btn-radio').not(this).removeClass('active')
+                  .siblings('input').prop('checked',false)
+                      .siblings('.img-radio').css('opacity','0.5');
+                $(this).addClass('active')
+                      .siblings('input').prop('checked',true)
+                  .siblings('.img-radio').css('opacity','1');
+              });
+          });
+    </script>
+
+
+      
+

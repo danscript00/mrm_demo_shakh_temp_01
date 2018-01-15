@@ -1,0 +1,73 @@
+
+    <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript">
+      function loginUser() { 
+          function onSuccess(resultFlag) {
+            if(resultFlag.trim() == "False") {
+                 
+            }
+            else {
+              document.getElementById("userImg").src = '/img/avatars/avatar' + resultFlag.trim() + '.png';
+              document.getElementById("loginLink").style.display = "none";      
+              document.getElementById("userImg").style.display = "block"; 
+              loadPage("articles"); 
+            }  
+          }
+
+          var username = document.getElementById("username").value;
+          var password = document.getElementById("password").value;
+
+          usersRequest(password, 'login', username, onSuccess);
+      } 
+    </script>
+
+    <!-- Page Content -->
+    <div class="container">    
+
+      <!-- Page Heading/Breadcrumbs -->
+     <h1 class="mt-4 mb-3">Login in
+        <small>MyRealMotivation</small>
+      </h1>
+
+      <div class="row main">
+        <div class="main-login main-center">
+          <form class="form-horizontal" method="post" action="#">
+
+            <div class="form-group">
+              <label for="username" class="cols-sm-2 control-label">Username</label>
+              <div class="cols-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" name="username" id="username" placeholder="Enter Username"/>
+                </div>
+              </div>
+            </div>
+   
+            <div class="form-group">
+                <label for="password" class="cols-sm-2 control-label">Password</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Enter password"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group ">
+              <button type="button" class="btn btn-primary btn-lg btn-block login-button" onclick="loginUser();">Login</button>
+            </div>
+            <div class="login-register">
+              <a href="/register" onclick="reloadPage('register'); return false;">Register</a>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.js"></script>
+
+    </div>
+    <!-- /.container -->
+

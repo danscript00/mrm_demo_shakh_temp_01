@@ -1,0 +1,198 @@
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>MyRealMotivation-web application that helps motivate yourself</title>
+
+    <link href="css/main.css" rel="stylesheet">
+
+    <script src="js/main.js?6"></script>
+    <script src="js/sha512.js"></script>
+
+    <!-- Bootstrap core JavaScript and CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="vendor/bootstrap/js/popper.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.js"></script>
+
+    <!-- Bootstrap Datepicker -->
+    <link href="css/datepicker.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
+    
+    <script type="text/javascript">
+      window.onload = (function () { 
+
+        //alert(window.location.search.substr(8));
+
+        if(window.location.search) {
+          function onSuccess(url) {
+            //document.getElementById("preloader").style = 'display:none';
+            //document.getElementById("mainPage").style = 'display:block';
+
+            loadArticle(url, id);
+          }
+
+          //var id = getParameterByName('article');
+          var id = window.location.search.substr(8);
+
+          getArticle(id.trim(), onSuccess);
+        }
+        else{
+          loadPage(window.location.pathname.substr(1));
+        } 
+
+      });  
+      
+      $(document).ready(function () {
+        if (window.history && window.history.pushState) {
+          $(window).on('popstate', function () {     
+            if(window.location.search.lastIndexOf("?article", 0) === 0) {
+              history.back();
+            }
+            else if(window.location.pathname.lastIndexOf("/article/", 0) === 0) {
+              location.reload();
+            }
+          });
+        }
+      });
+
+      function reloadPage(newPageId) {     
+        loadPage(newPageId);
+      }   
+
+      var pathname2 = window.location.pathname;
+      setInterval(function(){
+          if (window.location.pathname != pathname2) {
+            pathname2 = window.location.pathname;
+            pageId = pathname2.substr(1);
+            loadPage(pageId);
+          }
+      }, 100);
+
+      
+
+      /* DB TEST CODE*/
+      /*var xhr = CORSRequest('POST', 'jsonDB/scripts/articles3/test.php');
+      xhr.onload = function () {       
+        alert(xhr.responseText);
+      };   
+      xhr.send();*/
+
+
+      /*function onSuccess(data) {
+          //alert(data);
+      }*/
+      //addArticle('Registraciya-v-Telegram-bez-nomera-telefona-12-02', [1, 2, 4], onSuccess);
+      //addArticle('kak-ubrat-vseh-vozmozhnyh-druzej-vo-vkontakte-02-06', [1, 2, 4], onSuccess);
+      //addArticle('HHH-12-25', [1, 2, 4], onSuccess);
+      //deleteArticle('07000000', onSuccess);
+      //getArticle('07000001', onSuccess);
+      //getNewArticles(10, 0, onSuccess);
+
+    </script>
+
+  </head>
+
+  <body>  
+    
+    <!-- LOCAL USER DATA STORAGE -->
+    <input type="text" id="Garticles" style="display:none;" value=""/>
+    <input type="text" id="GuserId" style="display:none;" value=""/>
+    <input type="text" id="Gname" style="display:none;" value=""/>
+    <input type="text" id="Gusername" style="display:none;" value=""/>
+    <input type="text" id="Gmail" style="display:none;" value=""/>
+    
+    <!--<div id="preloader"  style='display:none'>
+      <div id="loader"></div>
+    </div>-->
+
+    <!-- Navigation -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href='/' onclick="reloadPage(''); return false;">MyRealMotivation</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/about" onclick="reloadPage('about'); return false;">About</a>
+            </li>
+            <li class="nav-item">
+              <a href="/articles" class="nav-link"  onclick="reloadPage('articles'); return false;">New</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="c/ontact" onclick="reloadPage('contact'); return false;">Contacts</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/faq" onclick="reloadPage('faq'); return false;">FAQ</a>
+            </li>
+            
+            <li class="nav-item dropdown" id="loginLink">
+              <a class="nav-link dropdown-toggle" href="/login" onclick="return false;" id="navbarDropdownBlog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Login
+              </a>
+              <div id="loginButton" class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
+                <a class="dropdown-item" href="/login" onclick="reloadPage('login'); return false;">Login</a> <!--onclick="loadLogin()"-->
+                <a class="dropdown-item" href="/register" onclick="reloadPage('register'); return false;">Registration</a>
+              </div>
+            </li>
+
+          <!--<div class="nav-item dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Login
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#login">Login</a>
+                <a class="dropdown-item" href="#register" onclick="reloadPage('register');">Registration</a>
+              </div>
+            </div>-->
+
+            <img id="userImg" src="" style="width:40px;height:40px;display:none;border-radius:50%;" alt="Avatar">
+          </ul>
+        </div>
+
+        
+      </div>
+    </nav>
+    
+  <div id="mainPage">
+    
+    <!--<script type="text/javascript">
+        if(window.location.pathname == "/") {
+          document.getElementById("preloader").style = 'display:block';
+          document.getElementById("mainPage").style = 'display:none';
+        }
+    </script>-->
+
+    <div id="webBody"></div>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark" id="copyrightFooter">
+      <div class="container">
+        <p class="m-0 text-center text-white" id="copyright">Copyright &copy; MyRealMotivation </p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <script>
+      document.getElementById("copyright").innerHTML = document.getElementById("copyright").innerHTML + (new Date()).getFullYear();
+    </script>
+
+    <script type="text/javascript">
+      if(window.location.search) {
+        document.getElementById("copyrightFooter").style = 'display:none';
+      }
+    </script>
+    
+ </div>
+
+  </body>
+
+</html>
